@@ -2,31 +2,53 @@
 
 <p align="center">WebApp that displays account value in robux and euro</p>
 
-### Build
+This webapp is pretty much an api wrapper for [roblox-account-value-api](https://github.com/BatteredBunny/roblox-account-value-api) so main functionality is on the server side
+
+# Hosting the webapp on nixos with caddy
+
+```nix
+# flake.nix
+roblox-account-value.url = "github:BatteredBunny/roblox-account-value";
+```
+
+```nix
+# configuration.nix
+services.caddy.virtualHosts = {
+    "roblox-account-value.sly.ee".extraConfig = ''
+        root * ${inputs.roblox-account-value.packages.${system}.default}
+        file_server
+    '';
+};
+```
+
+# Development
+
+### Normal way to build the project is with nix
+
 ```
 nix build
 ```
 
-### Shell
+### Get development dependencies easily
+(or if you have direnv they already get auto installed)
+
 ```
 nix develop
 ```
 
-## Makefile usage
-
-### Build
+### Build the web app locally
 
 ```
 make
 ```
 
-### Start dev server
+### Start live version at localhost
 
 ```
 make dev
 ```
 
-### Preview production build
+### Start production version at localhost
 
 ```
 make start
