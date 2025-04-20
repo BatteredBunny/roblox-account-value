@@ -17,25 +17,26 @@
 
       forAllSystems = lib.genAttrs systems;
 
-      overlays = [ (import rust-overlay) ];
-
       nixpkgsFor = forAllSystems (system: import nixpkgs {
-        inherit system overlays;
+        inherit system;
+
+        overlays = [
+          rust-overlay.overlays.default
+        ];
       });
     in
     {
       overlays.default = final: prev: {
-        roblox-account-value = final.callPackage ./build.nix { };
+        roblox-account-value = self.packages.${final.stdenv.system}.roblox-account-value;
       };
 
       packages = forAllSystems (system:
         let
           pkgs = nixpkgsFor.${system};
-          overlay = lib.makeScope pkgs.newScope (final: self.overlays.default final pkgs);
         in
-        {
-          inherit (overlay) roblox-account-value;
-          default = overlay.roblox-account-value;
+        rec {
+          roblox-account-value = default;
+          default = pkgs.callPackage ./build.nix { };
         }
       );
 
