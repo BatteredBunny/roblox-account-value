@@ -15,7 +15,7 @@ roblox-account-value.url = "github:BatteredBunny/roblox-account-value";
 # configuration.nix
 services.caddy.virtualHosts = {
     "roblox-account-value.sly.ee".extraConfig = ''
-        root * ${inputs.roblox-account-value.packages.${system}.default}
+        root * ${inputs.roblox-account-value.packages.default}
         file_server
     '';
 };
