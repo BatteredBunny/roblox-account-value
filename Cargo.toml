@@ -2,7 +2,7 @@
 name = "roblox_account_value"
 description = "Webapp to calculate value of a roblox account"
 version = "0.1.4"
-edition = "2021"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib"]
