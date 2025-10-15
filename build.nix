@@ -46,7 +46,7 @@ mkYarnPackage rec {
 
   offlineCache = fetchYarnDeps {
     yarnLock = src + "/yarn.lock";
-    hash = "sha256-EtXhgxk+y8WDci3+eycZjObf2/X+To4ViIgsRH6yk6c=";
+    hash = "sha256-M5U/9bPSk1C2XOOSieXeHGksfz2BLVqLdlFfNDiO5dU=";
   };
 
   buildPhase = ''
