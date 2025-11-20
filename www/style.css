@@ -1,14 +1,7 @@
-@use "common-web-styles/common";
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 :root {
-  --limited-color: green
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --limited-color: yellow
-  }
+  --limited-color: light-dark(green, yellow)
 }
 
 .line-break {

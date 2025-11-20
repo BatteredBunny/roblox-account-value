@@ -1,7 +1,5 @@
 { pkgs
 , makeRustPlatform
-, mkYarnPackage
-, fetchYarnDeps
 ,
 }:
 let
@@ -41,26 +39,30 @@ let
     installPhase = "echo 'Skipping installPhase'";
   };
 in
-mkYarnPackage rec {
+pkgs.stdenv.mkDerivation (finalAttrs: {
+  pname = "roblox-account-value";
+  version = "0.1.4";
+
   src = ./www;
 
-  offlineCache = fetchYarnDeps {
-    yarnLock = src + "/yarn.lock";
-    hash = "sha256-3TZxEU/l+3KTgz689AU2Ub0hspQXzjWM5McrJR7tMhg=";
-  };
+  nativeBuildInputs = with pkgs; [
+    nodejs
+    pnpm_10.configHook
+  ];
 
   buildPhase = ''
+    runHook preBuild
+
     ln -s ${wasm-build}/pkg ../pkg
-    export HOME=$(mktemp -d)
-    yarn --offline build
+    pnpm build
     cp -r dist $out
+
+    runHook postBuild
   '';
 
-  doDist = false;
-
-  configurePhase = ''
-    ln -s $node_modules node_modules
-  '';
-
-  installPhase = "echo 'Skipping installPhase'";
-}
+  pnpmDeps = pkgs.pnpm_10.fetchDeps {
+    inherit (finalAttrs) pname version src;
+    fetcherVersion = 2;
+    hash = "sha256-2J+oGmaXWE3U5PzKg4LbtqHhB2cXK23Xknlok2Dn+aw=";
+  };
+})
