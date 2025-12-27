@@ -1,53 +1,52 @@
-{ pkgs
-, makeRustPlatform
-,
-}:
+{ pkgs, stdenv, rustPlatform }:
 let
   targetName = "wasm32-unknown-unknown";
+  pname = "roblox-account-value";
+  version = "0.1.4";
 
-  wasm-rust = pkgs.rust-bin.stable.latest.default.override {
-    extensions = [ "rust-src" ];
-    targets = [ targetName ];
-  };
+  wasm-build = rustPlatform.buildRustPackage {
+    inherit pname version;
 
-  rustPlatformWasm = makeRustPlatform {
-    cargo = wasm-rust;
-    rustc = wasm-rust;
-  };
-
-  wasm-build = rustPlatformWasm.buildRustPackage {
-    name = "roblox-account-value";
     cargoLock.lockFile = ./Cargo.lock;
 
     src = ./.;
 
     nativeBuildInputs = with pkgs; [
       wasm-bindgen-cli_0_2_104
+      pkg-config
+      llvmPackages.lld
     ];
 
     buildInputs = with pkgs; [
       openssl
-      pkg-config
       gnumake
     ];
 
+    doCheck = false;
+
     buildPhase = ''
+      runHook preBuild
+
       cargo build --target ${targetName} --release
+
+      mkdir -p $out/pkg
       wasm-bindgen target/${targetName}/release/roblox_account_value.wasm --out-dir=$out/pkg
+
+      runHook postBuild
     '';
 
     installPhase = "echo 'Skipping installPhase'";
   };
 in
-pkgs.stdenv.mkDerivation (finalAttrs: {
-  pname = "roblox-account-value";
-  version = "0.1.4";
+stdenv.mkDerivation (finalAttrs: {
+  inherit pname version;
 
   src = ./www;
 
   nativeBuildInputs = with pkgs; [
     nodejs
-    pnpm_10.configHook
+    pnpmConfigHook
+    pnpm_10
   ];
 
   buildPhase = ''
@@ -60,7 +59,7 @@ pkgs.stdenv.mkDerivation (finalAttrs: {
     runHook postBuild
   '';
 
-  pnpmDeps = pkgs.pnpm_10.fetchDeps {
+  pnpmDeps = pkgs.fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 2;
     hash = "sha256-m2NQiBgbMt/RUvoCkcmZBF7iB4dL2jkT9kK08LSpM/Y=";
