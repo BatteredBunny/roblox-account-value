@@ -1,4 +1,15 @@
-{ pkgs, stdenv, rustPlatform }:
+{
+  stdenvNoCC,
+  rustPlatform,
+  fetchPnpmDeps,
+  nodejs,
+  pnpmConfigHook,
+  pnpm_10,
+  openssl,
+  wasm-bindgen-cli_0_2_106,
+  pkg-config,
+  llvmPackages,
+}:
 let
   targetName = "wasm32-unknown-unknown";
   pname = "roblox-account-value";
@@ -11,15 +22,14 @@ let
 
     src = ./.;
 
-    nativeBuildInputs = with pkgs; [
-      wasm-bindgen-cli_0_2_104
+    nativeBuildInputs = [
+      wasm-bindgen-cli_0_2_106
       pkg-config
       llvmPackages.lld
     ];
 
-    buildInputs = with pkgs; [
+    buildInputs = [
       openssl
-      gnumake
     ];
 
     doCheck = false;
@@ -38,12 +48,12 @@ let
     installPhase = "echo 'Skipping installPhase'";
   };
 in
-stdenv.mkDerivation (finalAttrs: {
+stdenvNoCC.mkDerivation (finalAttrs: {
   inherit pname version;
 
   src = ./www;
 
-  nativeBuildInputs = with pkgs; [
+  nativeBuildInputs = [
     nodejs
     pnpmConfigHook
     pnpm_10
@@ -59,9 +69,9 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postBuild
   '';
 
-  pnpmDeps = pkgs.fetchPnpmDeps {
+  pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
-    fetcherVersion = 2;
-    hash = "sha256-m2NQiBgbMt/RUvoCkcmZBF7iB4dL2jkT9kK08LSpM/Y=";
+    fetcherVersion = 3;
+    hash = "sha256-hH6biSkIPL8dQ8/Sdo8Hq01BG32ALFd0F+j+4rlTFXA=";
   };
 })

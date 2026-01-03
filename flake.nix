@@ -4,25 +4,30 @@
   };
 
   outputs =
-    { self
-    , nixpkgs
-    , ...
+    {
+      self,
+      nixpkgs,
+      ...
     }:
     let
       inherit (nixpkgs) lib;
       systems = lib.systems.flakeExposed;
       forAllSystems = lib.genAttrs systems;
 
-      nixpkgsFor = forAllSystems (system: import nixpkgs {
-        inherit system;
-      });
+      nixpkgsFor = forAllSystems (
+        system:
+        import nixpkgs {
+          inherit system;
+        }
+      );
     in
     {
       overlays.default = final: prev: {
         roblox-account-value = self.packages.${final.stdenv.system}.roblox-account-value;
       };
 
-      packages = forAllSystems (system:
+      packages = forAllSystems (
+        system:
         let
           pkgs = nixpkgsFor.${system};
         in
@@ -32,7 +37,8 @@
         }
       );
 
-      devShells = forAllSystems (system:
+      devShells = forAllSystems (
+        system:
         let
           pkgs = nixpkgsFor.${system};
         in
@@ -47,10 +53,11 @@
               pkg-config
               gnumake
               pnpm_10
-              wasm-bindgen-cli_0_2_104
+              wasm-bindgen-cli_0_2_106
               caddy # caddy file-server --listen :8000 --browse --root result
             ];
           };
-        });
+        }
+      );
     };
 }
