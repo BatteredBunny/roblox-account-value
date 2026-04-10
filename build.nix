@@ -72,6 +72,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 3;
-    hash = "sha256-fNOC7jRLLGPMnq8pa89xB7J5BhRa1biusH9tlgsnbZ8=";
+    hash = "sha256-kYxLn+5L9AS9WDTZ/KJONsD7VKEi9R9hmRH+6Bripuc=";
   };
 })
