@@ -52,8 +52,8 @@
               openssl
               pkg-config
               gnumake
-              pnpm_10
-              wasm-bindgen-cli_0_2_106
+              pnpm_11
+              wasm-bindgen-cli_0_2_118
               caddy # caddy file-server --listen :8000 --browse --root result
             ];
           };

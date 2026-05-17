@@ -1,5 +1,13 @@
 use gloo::net::http::Request;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
+
+fn null_as_default<'de, D, T>(deserializer: D) -> Result<T, D::Error>
+where
+    D: Deserializer<'de>,
+    T: Deserialize<'de> + Default,
+{
+    Ok(Option::deserialize(deserializer)?.unwrap_or_default())
+}
 
 pub const API_URL: &str = "https://roblox-account-value-api.sly.ee";
 
@@ -16,6 +24,7 @@ pub struct CollectiblesAccountValueCollectible {
 pub struct CollectiblesAccountValue {
     pub total_robux: u64,
     pub in_euro: u64,
+    #[serde(deserialize_with = "null_as_default")]
     pub collectibles: Vec<CollectiblesAccountValueCollectible>,
 }
 
