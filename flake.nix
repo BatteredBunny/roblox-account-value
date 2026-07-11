@@ -53,7 +53,7 @@
               pkg-config
               gnumake
               pnpm_11
-              wasm-bindgen-cli_0_2_118
+              wasm-bindgen-cli_0_2_126
               caddy # caddy file-server --listen :8000 --browse --root result
             ];
           };

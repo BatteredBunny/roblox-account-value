@@ -6,7 +6,7 @@
   pnpmConfigHook,
   pnpm_11,
   openssl,
-  wasm-bindgen-cli_0_2_118,
+  wasm-bindgen-cli_0_2_126,
   pkg-config,
   llvmPackages,
 }:
@@ -15,7 +15,7 @@ let
   pname = "roblox-account-value";
   version = "0.1.4";
 
-  wasm-bindgen = wasm-bindgen-cli_0_2_118;
+  wasm-bindgen = wasm-bindgen-cli_0_2_126;
   pnpm = pnpm_11;
 
   wasm-build = rustPlatform.buildRustPackage {
@@ -74,7 +74,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
-    fetcherVersion = 3;
-    hash = "sha256-S/zeNzeGQtoUIVTyvUVETit3iq81Kxmdp6STNGJR/OI=";
+    fetcherVersion = 4;
+    hash = "sha256-izv0Dfbv9gGvVTbJqznzGOopir2HV8Hy+moHc5KfqrU=";
   };
 })
