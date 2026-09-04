@@ -75,6 +75,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 4;
-    hash = "sha256-7ATA1MgOGWECcQzOJVLaZ1iD1ZQBeNsT2chQFmaxkeU=";
+    hash =
+      if stdenvNoCC.hostPlatform.isDarwin then
+        "sha256-7ATA1MgOGWECcQzOJVLaZ1iD1ZQBeNsT2chQFmaxkeU="
+      else
+        "sha256-Jd85o3EWmILiV89UWgrTwqQa7pA5mP1p3evEYfawFiI=";
   };
 })
