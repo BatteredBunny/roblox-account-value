@@ -79,6 +79,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       if stdenvNoCC.hostPlatform.isDarwin then
         "sha256-7ATA1MgOGWECcQzOJVLaZ1iD1ZQBeNsT2chQFmaxkeU="
       else
-        "sha256-Jd85o3EWmILiV89UWgrTwqQa7pA5mP1p3evEYfawFiI=";
+        "sha256-abRjdrdm0xYAPLl48PlNFJtL40KrTPwKvHGXaEliojo=";
   };
 })
